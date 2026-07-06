@@ -91,7 +91,6 @@ function renderHighResReadingView() {
         const textLayerDiv = wrapper.querySelector('.textLayer');
 
         return pdfDoc.getPage(pageNum).then(page => {
-            // Standard crisp baseline 2.0 scale for everything—no layout shifting math
             const viewport = page.getViewport({ scale: 2.0 });
             const context = canvas.getContext('2d');
             
