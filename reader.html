@@ -26,7 +26,15 @@
         <div class="page-indicator">Page <span id="current-page">1</span> of <span id="total-pages">-</span></div>
     </nav>
 
-    <main class="reader-viewport">
+<main class="reader-viewport">
+        <!-- Modern, elegant loading screen -->
+        <div id="reader-loading-screen" class="reader-placeholder">
+            <img id="instant-cover-backdrop" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Loading Cover..." class="loading-cover-blur">
+            <div class="spinner-editorial"></div>
+            <p class="loading-text">Preparing Editorial Layout...</p>
+        </div>
+
+        <!-- The native scroll track sits directly here -->
         <div id="scroll-view" class="container-scroll"></div>
     </main>
 
