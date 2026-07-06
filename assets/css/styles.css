@@ -219,24 +219,22 @@ body {
     }
 }
 
-/* ==========================================================================
+/* /* ==========================================================================
    5. HIGH-RES SEAMLESS CANVAS BLENDING & TEXT LAYERS
    ========================================================================== */
 .page-container {
     position: relative;
     background-color: transparent !important;
     box-shadow: none !important;
-    transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
-    will-change: transform;
     
-    /* Mobile Card Setup: Each card container matches the exact width of the viewport */
+    /* Removed all zoom transitions and forced scales */
     flex: 0 0 100vw !important;
     height: 100%;
     display: flex !important;
     justify-content: center;
     align-items: center;
     scroll-snap-align: center !important;
-    scroll-snap-stop: always !important; /* Forces the swipe to stop exactly on the next page card */
+    scroll-snap-stop: always !important;
     padding: 0 1rem;
 }
 
@@ -254,7 +252,7 @@ body {
 .page-container canvas {
     display: block;
     max-width: 100%;
-    max-height: 82vh; /* Protects page height thresholds on mobile viewports safely */
+    max-height: 85vh; /* Standard Kindle window fit constraints */
     width: auto !important;
     height: auto !important;
     mix-blend-mode: multiply;
@@ -268,7 +266,6 @@ body {
     }
 }
 
-/* Precise Text Coordinates Matching Overlay Box Map */
 .textLayer {
     position: absolute;
     left: 50%;

@@ -44,7 +44,7 @@ function renderHighResReadingView() {
     scrollContainer.innerHTML = '';
     const isMobile = window.innerWidth < 768;
     
-    // 1. Structural building track loop
+    // 1. Build structural tracking containers
     for (let pageNum = 1; pageNum <= totalPageCount; pageNum++) {
         const pageContainer = document.createElement('div');
         pageContainer.id = `scroll-page-wrapper-${pageNum}`;
@@ -61,7 +61,7 @@ function renderHighResReadingView() {
         scrollContainer.appendChild(pageContainer);
     }
 
-    // 2. Prioritize page 1 rendering pass
+    // 2. Load Page 1 instantly
     renderSinglePage(1).then(() => {
         const loadingScreen = document.getElementById('reader-loading-screen');
         if (loadingScreen) {
@@ -73,10 +73,8 @@ function renderHighResReadingView() {
             const savedEl = document.getElementById(`scroll-page-wrapper-${currentPageNum}`);
             if (savedEl) {
                 if (isMobile) {
-                    // Mobile: scroll horizontally to saved page coordinates
                     scrollContainer.scrollLeft = savedEl.offsetLeft;
                 } else {
-                    // Desktop: scroll vertically
                     savedEl.scrollIntoView({ block: 'start' });
                 }
             }
@@ -93,15 +91,8 @@ function renderHighResReadingView() {
         const textLayerDiv = wrapper.querySelector('.textLayer');
 
         return pdfDoc.getPage(pageNum).then(page => {
-            let scale = 2.0; // Sharp crisp rendering for desktop monitors
-            
-            if (isMobile) {
-                // KINDLE MOBI FIT: Calculate scale based on device screen width to prevent auto-zoom cutting
-                const viewportUnscaled = page.getViewport({ scale: 1.0 });
-                scale = (window.innerWidth - 32) / viewportUnscaled.width; 
-            }
-
-            const viewport = page.getViewport({ scale: scale });
+            // Standard crisp baseline 2.0 scale for everything—no layout shifting math
+            const viewport = page.getViewport({ scale: 2.0 });
             const context = canvas.getContext('2d');
             
             canvas.height = viewport.height;
@@ -109,7 +100,6 @@ function renderHighResReadingView() {
 
             return page.render({ canvasContext: context, viewport: viewport }).promise.then(() => {
                 if (pageNum > 1 && textLayerDiv) {
-                    // Align the invisible text alignment box over canvas boundaries cleanly
                     textLayerDiv.style.width = `${viewport.width}px`;
                     textLayerDiv.style.height = `${viewport.height}px`;
                     
@@ -133,7 +123,7 @@ function renderHighResReadingView() {
         });
     }
 
-    // Scroll metrics progress capture engine
+    // Monitor position tracking metrics on scroll
     scrollContainer.addEventListener('scroll', () => {
         for (let pageNum = 1; pageNum <= totalPageCount; pageNum++) {
             const pageEl = document.getElementById(`scroll-page-wrapper-${pageNum}`);
@@ -158,34 +148,4 @@ function renderHighResReadingView() {
             }
         }
     });
-}
-
-// Double tap layout interaction controls
-let currentZoomScale = 1.0;
-let lastTapTime = 0;
-
-if (scrollContainer) {
-    scrollContainer.addEventListener('touchstart', (e) => {
-        const currentTime = new Date().getTime();
-        const tapLength = currentTime - lastTapTime;
-        if (tapLength < 300 && tapLength > 0) {
-            e.preventDefault();
-            togglePageZoom();
-        }
-        lastTapTime = currentTime;
-    });
-    scrollContainer.addEventListener('dblclick', () => {
-        togglePageZoom();
-    });
-}
-
-function togglePageZoom() {
-    const allPages = document.querySelectorAll('.page-container');
-    if (currentZoomScale === 1.0) {
-        currentZoomScale = 1.4;
-        allPages.forEach(page => page.style.transform = `scale(${currentZoomScale})`);
-    } else {
-        currentZoomScale = 1.0;
-        allPages.forEach(page => page.style.transform = 'scale(1)');
-    }
 }
