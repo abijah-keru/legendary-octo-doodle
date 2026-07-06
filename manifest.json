@@ -1,0 +1,17 @@
+{
+  "short_name": "Stuff",
+  "name": "Stuff Editorial Archive",
+  "icons": [
+    {
+      "src": "assets/covers/issue-01.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/index.html",
+  "background_color": "#fbfbfb",
+  "theme_color": "#fbfbfb",
+  "display": "standalone",
+  "orientation": "portrait"
+}

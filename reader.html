@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chronicle | Reading Room</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf_viewer.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <!-- PWA Installation Controls -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#fbfbfb">
+</head>
+<body class="reader-body">
+
+    <nav class="reader-nav">
+        <a href="index.html" class="back-button">&larr; Return to Library</a>
+        <div class="reader-controls">
+            <span id="issue-title" class="reader-issue-title">Loading Profile...</span>
+        </div>
+        <div class="page-indicator">Page <span id="current-page">1</span> of <span id="total-pages">-</span></div>
+    </nav>
+
+    <main class="reader-viewport">
+        <div id="scroll-view" class="container-scroll"></div>
+    </main>
+
+    <script src="assets/js/reader.js"></script>
+</body>
+</html>

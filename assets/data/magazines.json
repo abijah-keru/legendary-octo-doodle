@@ -1,0 +1,26 @@
+[
+  {
+    "id": "issue-03",
+    "title": "The Latest Concept",
+    "number": "03",
+    "date": "June 2026",
+    "coverImage": "assets/covers/issue-03.png",
+    "pdfUrl": "assets/pdfs/issue-03.pdf"
+  },
+  {
+    "id": "issue-02",
+    "title": "Editorial Musings",
+    "number": "02",
+    "date": "March 2026",
+    "coverImage": "assets/covers/issue-02.png",
+    "pdfUrl": "assets/pdfs/issue-02.pdf"
+  },
+  {
+    "id": "issue-01",
+    "title": "The Debut Issue",
+    "number": "01",
+    "date": "January 2026",
+    "coverImage": "assets/covers/issue-01.png",
+    "pdfUrl": "assets/pdfs/issue-01.pdf"
+  }
+]
