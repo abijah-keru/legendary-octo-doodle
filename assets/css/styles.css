@@ -142,13 +142,13 @@ body {
    4. IMMERSIVE WARM PAPER KINDLE READING ROOM
    ========================================================================== */
 .reader-body {
-    background-color: #fbfbfb !important; /* Locks background canvas colors cleanly */
+    background-color: #fbfbfb !important;
     color: var(--text-charcoal);
     overflow: hidden;
     height: 100vh;
     width: 100vw;
     padding: 0;
-    position: fixed; /* Prevents mobile browser bar bounce from breaking scroll snapping */
+    position: fixed; /* Prevents mobile viewport bounce distortion */
 }
 
 .reader-nav {
@@ -191,14 +191,14 @@ body {
     position: relative;
 }
 
-/* --- MASTER SEAMLESS HORIZONTAL SWIPE TRACK --- */
+/* --- THE SWIPE CONTAINER TRACK --- */
 .container-scroll {
     height: 100%;
     width: 100%;
     display: flex;
     background-color: #fbfbfb !important;
     
-    /* MOBILE HARD RESET: Force explicit left-to-right axis tracking only */
+    /* MOBILE STEADY: Horizontal navigation axis only */
     flex-direction: row !important;
     overflow-x: auto !important;
     overflow-y: hidden !important;
@@ -206,7 +206,7 @@ body {
     -webkit-overflow-scrolling: touch;
 }
 
-/* DESKTOP VIEWPORT COOLDOWN: Reverts back to traditional vertical scroll layout on laptop displays */
+/* DESKTOP RESTORATION */
 @media (min-width: 768px) {
     .container-scroll {
         flex-direction: column !important;
@@ -219,7 +219,7 @@ body {
     }
 }
 
-/* /* ==========================================================================
+/* ==========================================================================
    5. HIGH-RES SEAMLESS CANVAS BLENDING & TEXT LAYERS
    ========================================================================== */
 .page-container {
@@ -227,41 +227,45 @@ body {
     background-color: transparent !important;
     box-shadow: none !important;
     
-    /* Removed all zoom transitions and forced scales */
-    flex: 0 0 100vw !important;
-    height: 100%;
+    flex: 0 0 100vw !important; /* Force each page container to stay exactly 100% phone width */
+    height: 100% !important;
+    width: 100vw !important;
     display: flex !important;
     justify-content: center;
     align-items: center;
     scroll-snap-align: center !important;
     scroll-snap-stop: always !important;
-    padding: 0 1rem;
+    padding: 0 1.5rem; /* Safe padding barrier protection */
+    overflow: hidden !important; /* Prevents raw elements from bleeding out */
 }
 
 @media (min-width: 768px) {
     .page-container {
         flex: none !important;
         max-width: 85%;
-        width: auto;
-        height: auto;
+        width: auto !important;
+        height: auto !important;
         display: block !important;
         padding: 0;
+        overflow: visible !important;
     }
 }
 
+/* --- THIS STRIPS THE NONSENSE ZOOM BLOWOUT --- */
 .page-container canvas {
-    display: block;
-    max-width: 100%;
-    max-height: 85vh; /* Standard Kindle window fit constraints */
-    width: auto !important;
-    height: auto !important;
+    display: block !important;
+    max-width: 100% !important;  /* Forces the canvas to scale down to the phone frame width */
+    max-height: 80vh !important;  /* Ensures it never bleeds past the top/bottom viewport boundaries */
+    width: auto !important;       /* Lets aspect ratio calculate cleanly */
+    height: auto !important;      /* Prevents unnatural stretching or pulling */
+    object-fit: contain !important;
     mix-blend-mode: multiply;
     filter: multiply;
 }
 
 @media (min-width: 768px) {
     .page-container canvas {
-        max-height: none;
+        max-height: none !important;
         width: 100% !important;
     }
 }
@@ -270,7 +274,8 @@ body {
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(0.5); /* Scales down the invisible select tool box layout matching canvas scale */
+    transform-origin: center center;
     overflow: hidden;
     opacity: 1;
     line-height: 1.0;
