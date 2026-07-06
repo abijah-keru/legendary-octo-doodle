@@ -119,14 +119,27 @@ function renderHighResReadingView() {
         });
     }
 
-    // Tracking active scroll timeline indicators
+  // Tracking active scroll timeline indicators dynamically
     scrollContainer.addEventListener('scroll', () => {
-        const containerTop = scrollContainer.getBoundingClientRect().top;
+        const isMobile = window.innerWidth < 768;
+        
         for (let pageNum = 1; pageNum <= totalPageCount; pageNum++) {
             const pageEl = document.getElementById(`scroll-page-wrapper-${pageNum}`);
             if (pageEl) {
                 const rect = pageEl.getBoundingClientRect();
-                if (rect.top <= containerTop + 200 && rect.bottom >= containerTop + 200) {
+                
+                let isCurrent = false;
+                if (isMobile) {
+                    // Mobile Check: Looks at the horizontal midpoint match
+                    const midPoint = window.innerWidth / 2;
+                    isCurrent = (rect.left <= midPoint && rect.right >= midPoint);
+                } else {
+                    // Desktop Check: Keeps the vertical intersection baseline
+                    const containerTop = scrollContainer.getBoundingClientRect().top;
+                    isCurrent = (rect.top <= containerTop + 200 && rect.bottom >= containerTop + 200);
+                }
+
+                if (isCurrent) {
                     currentPageNum = pageNum;
                     if (pageIndicatorNum) pageIndicatorNum.textContent = currentPageNum;
                     localStorage.setItem(`read_progress_${currentId}`, currentPageNum);
@@ -135,7 +148,6 @@ function renderHighResReadingView() {
             }
         }
     });
-}
 
 // ==========================================================================
 // DIRECT ZOOM MECHANICS (SCALES INDIVIDUAL PAGES / KEEPS SCROLL ACTIVE)
@@ -175,4 +187,4 @@ function togglePageZoom() {
             page.style.transform = 'scale(1)';
         });
     }
-}
+}}
