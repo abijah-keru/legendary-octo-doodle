@@ -1,4 +1,3 @@
-// Initialize high-res worker tracking pipeline
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
 
 let pdfDoc = null,
@@ -14,7 +13,6 @@ const issueTitleHeader = document.getElementById('issue-title');
 const urlParams = new URLSearchParams(window.location.search);
 const magId = urlParams.get('id');
 
-// Fetch clean catalog profile manifest coordinates
 fetch('assets/data/magazines.json')
     .then(res => res.json())
     .then(magazines => {
@@ -44,8 +42,9 @@ function loadPDFDocument(url) {
 
 function renderHighResReadingView() {
     scrollContainer.innerHTML = '';
+    const isMobile = window.innerWidth < 768;
     
-    // 1. Pre-generate all layout wrapper elements so scrolling height is immediate
+    // 1. Structural building track loop
     for (let pageNum = 1; pageNum <= totalPageCount; pageNum++) {
         const pageContainer = document.createElement('div');
         pageContainer.id = `scroll-page-wrapper-${pageNum}`;
@@ -62,26 +61,30 @@ function renderHighResReadingView() {
         scrollContainer.appendChild(pageContainer);
     }
 
-    // 2. PRIORITIZE COVER PAGE: Render Page 1 solo to eliminate screen freeze entirely
+    // 2. Prioritize page 1 rendering pass
     renderSinglePage(1).then(() => {
-        // Drop the loading panel instantly the moment page 1 completes rendering
         const loadingScreen = document.getElementById('reader-loading-screen');
         if (loadingScreen) {
             loadingScreen.style.opacity = '0';
             setTimeout(() => loadingScreen.remove(), 400);
         }
         
-        // Restore page progress logs seamlessly without delaying visual presentation
         setTimeout(() => {
             const savedEl = document.getElementById(`scroll-page-wrapper-${currentPageNum}`);
-            if (savedEl && currentPageNum > 1) savedEl.scrollIntoView({ block: 'start' });
-        }, 50);
+            if (savedEl) {
+                if (isMobile) {
+                    // Mobile: scroll horizontally to saved page coordinates
+                    scrollContainer.scrollLeft = savedEl.offsetLeft;
+                } else {
+                    // Desktop: scroll vertically
+                    savedEl.scrollIntoView({ block: 'start' });
+                }
+            }
+        }, 150);
 
-        // 3. LAZY PIPELINE LAUNCH: Stream structural spreads one after another in background thread
         renderRemainingPagesSequentially(2);
     });
 
-    // Isolated render pipeline worker
     function renderSinglePage(pageNum) {
         const wrapper = document.getElementById(`scroll-page-wrapper-${pageNum}`);
         if (!wrapper) return Promise.resolve();
@@ -90,7 +93,15 @@ function renderHighResReadingView() {
         const textLayerDiv = wrapper.querySelector('.textLayer');
 
         return pdfDoc.getPage(pageNum).then(page => {
-            const viewport = page.getViewport({ scale: 2.0 });
+            let scale = 2.0; // Sharp crisp rendering for desktop monitors
+            
+            if (isMobile) {
+                // KINDLE MOBI FIT: Calculate scale based on device screen width to prevent auto-zoom cutting
+                const viewportUnscaled = page.getViewport({ scale: 1.0 });
+                scale = (window.innerWidth - 32) / viewportUnscaled.width; 
+            }
+
+            const viewport = page.getViewport({ scale: scale });
             const context = canvas.getContext('2d');
             
             canvas.height = viewport.height;
@@ -98,6 +109,10 @@ function renderHighResReadingView() {
 
             return page.render({ canvasContext: context, viewport: viewport }).promise.then(() => {
                 if (pageNum > 1 && textLayerDiv) {
+                    // Align the invisible text alignment box over canvas boundaries cleanly
+                    textLayerDiv.style.width = `${viewport.width}px`;
+                    textLayerDiv.style.height = `${viewport.height}px`;
+                    
                     return page.getTextContent().then(textContent => {
                         return pdfjsLib.renderTextLayer({
                             textContent: textContent,
@@ -108,10 +123,9 @@ function renderHighResReadingView() {
                     });
                 }
             });
-        }).catch(err => console.error(`Error processing spread segment ${pageNum}:`, err));
+        }).catch(err => console.error(err));
     }
 
-    // Non-blocking sequential processor loop
     function renderRemainingPagesSequentially(nextPage) {
         if (nextPage > totalPageCount) return;
         renderSinglePage(nextPage).then(() => {
@@ -119,22 +133,18 @@ function renderHighResReadingView() {
         });
     }
 
-  // Tracking active scroll timeline indicators dynamically
+    // Scroll metrics progress capture engine
     scrollContainer.addEventListener('scroll', () => {
-        const isMobile = window.innerWidth < 768;
-        
         for (let pageNum = 1; pageNum <= totalPageCount; pageNum++) {
             const pageEl = document.getElementById(`scroll-page-wrapper-${pageNum}`);
             if (pageEl) {
                 const rect = pageEl.getBoundingClientRect();
-                
                 let isCurrent = false;
+
                 if (isMobile) {
-                    // Mobile Check: Looks at the horizontal midpoint match
                     const midPoint = window.innerWidth / 2;
                     isCurrent = (rect.left <= midPoint && rect.right >= midPoint);
                 } else {
-                    // Desktop Check: Keeps the vertical intersection baseline
                     const containerTop = scrollContainer.getBoundingClientRect().top;
                     isCurrent = (rect.top <= containerTop + 200 && rect.bottom >= containerTop + 200);
                 }
@@ -148,15 +158,13 @@ function renderHighResReadingView() {
             }
         }
     });
+}
 
-// ==========================================================================
-// DIRECT ZOOM MECHANICS (SCALES INDIVIDUAL PAGES / KEEPS SCROLL ACTIVE)
-// ==========================================================================
+// Double tap layout interaction controls
 let currentZoomScale = 1.0;
 let lastTapTime = 0;
 
 if (scrollContainer) {
-    // Touch tracking configurations for mobile devices
     scrollContainer.addEventListener('touchstart', (e) => {
         const currentTime = new Date().getTime();
         const tapLength = currentTime - lastTapTime;
@@ -166,8 +174,6 @@ if (scrollContainer) {
         }
         lastTapTime = currentTime;
     });
-
-    // Double click actions for desktop mice mapping tracks
     scrollContainer.addEventListener('dblclick', () => {
         togglePageZoom();
     });
@@ -175,16 +181,11 @@ if (scrollContainer) {
 
 function togglePageZoom() {
     const allPages = document.querySelectorAll('.page-container');
-    
     if (currentZoomScale === 1.0) {
-        currentZoomScale = 1.4; // Magnify layout smoothly for clean column inspection
-        allPages.forEach(page => {
-            page.style.transform = `scale(${currentZoomScale})`;
-        });
+        currentZoomScale = 1.4;
+        allPages.forEach(page => page.style.transform = `scale(${currentZoomScale})`);
     } else {
-        currentZoomScale = 1.0; // Snap cleanly back to default edge margins
-        allPages.forEach(page => {
-            page.style.transform = 'scale(1)';
-        });
+        currentZoomScale = 1.0;
+        allPages.forEach(page => page.style.transform = 'scale(1)');
     }
-}}
+}
