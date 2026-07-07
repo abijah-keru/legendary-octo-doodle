@@ -26,6 +26,12 @@ body {
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
 }
+/* Global Image Constraint - Stops all images from breaking the mobile viewport */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Removes weird invisible margins under images */
+}
 
 /* ==========================================================================
    2. REFINED HEADER NAVIGATION
@@ -158,12 +164,9 @@ body {
 
 .featured-cover-shadow-box {
     width: 100%;
-    max-width: 100%;
     aspect-ratio: 2 / 3;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15); 
     transition: transform 0.3s ease;
-    display: block;
-    margin: 0 auto;
 }
 
 .featured-cover-shadow-box:hover {
@@ -271,7 +274,7 @@ body {
    ========================================================================== */
 .archive-showcase-container {
     background-color: var(--bg-pure-white); 
-    width: 100%;
+    width: 100vw;
     padding: 6rem 8% 8rem 8%;
     border-top: 1px solid rgba(0, 0, 0, 0.04);
 }
@@ -284,29 +287,6 @@ body {
     margin-bottom: 4rem;
     border-bottom: 1px solid #eeeeee;
     padding-bottom: 2rem;
-}
-
-@media (max-width: 991px) {
-    .archive-showcase-container {
-        padding: 4rem 5% 6rem 5%;
-    }
-    
-    .catalog-split-header {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .archive-showcase-container {
-        padding: 3rem 4% 4rem 4%;
-    }
-}
-
-@media (max-width: 480px) {
-    .archive-showcase-container {
-        padding: 2rem 4% 3rem 4%;
-    }
 }
 
 @media (max-width: 768px) {
@@ -356,30 +336,6 @@ body {
     .horizontal-showcase-row {
         grid-template-columns: 1fr;
         gap: 4rem;
-    }
-    .issue-tag {
-        font-size: 0.85rem;
-    }
-    .editorial-read-btn {
-        font-size: 0.8rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .issue-tag {
-        font-size: 0.9rem;
-    }
-    .editorial-read-btn {
-        font-size: 0.85rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .issue-tag {
-        font-size: 0.95rem;
-    }
-    .editorial-read-btn {
-        font-size: 0.9rem;
     }
 }
 
@@ -565,11 +521,11 @@ body {
 
 @media (max-width: 768px) {
     .about-card-section {
-        padding: 2rem 5%;
+        padding: 4rem 5%;
     }
     
     .about-card {
-        padding: 0;
+        padding: 3rem 2rem;
     }
     
     .about-title-teal {
@@ -578,31 +534,6 @@ body {
     
     .about-image-overlay {
         height: 400px;
-    }
-}
-
-@media (max-width: 480px) {
-    .about-card-section {
-        padding: 1.5rem 4%;
-    }
-    
-    .about-micro-label {
-        font-size: 0.7rem;
-    }
-    
-    .about-title-teal {
-        font-size: 1.4rem;
-        margin-bottom: 1.5rem;
-    }
-    
-    .about-content-text p {
-        font-size: 1rem;
-    }
-    
-    .about-image-overlay {
-        height: 350px;
-        margin-top: 0;
-        margin-bottom: 0;
     }
 }
 
@@ -743,40 +674,4 @@ body {
 .page-container canvas {
     background-color: #ffffff;
     transition: opacity 0.2s ease;
-}
-
-/* ==========================================================================
-   MOBILE OPTIMIZATION - Prevents Overflow & Ensures Responsive Behavior
-   ========================================================================== */
-@media (max-width: 768px) {
-    /* 1. Shrink the featured magazine cover */
-    .featured-cover-shadow-box {
-        width: 85% !important;
-        max-width: 300px;
-        margin: 0 auto;
-    }
-
-    /* 2. Ensure all cover images stay contained */
-    .featured-hero-img,
-    .showcase-img {
-        width: 100%;
-        height: auto;
-        max-width: 100%;
-    }
-
-    /* 3. Prevent layout overflow on mag cards */
-    .premium-editorial-card {
-        width: 100%;
-        overflow: hidden;
-    }
-
-    /* 4. Ensure about section images don't overflow */
-    .about-image-overlay img {
-        max-width: 100%;
-        height: auto;
-    }
-
-    body {
-        overflow-x: hidden;
-    }
 }
