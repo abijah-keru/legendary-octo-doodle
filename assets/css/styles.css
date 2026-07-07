@@ -268,7 +268,7 @@ body {
    ========================================================================== */
 .archive-showcase-container {
     background-color: var(--bg-pure-white); 
-    width: 100vw;
+    width: 100%;
     padding: 6rem 8% 8rem 8%;
     border-top: 1px solid rgba(0, 0, 0, 0.04);
 }
@@ -281,6 +281,29 @@ body {
     margin-bottom: 4rem;
     border-bottom: 1px solid #eeeeee;
     padding-bottom: 2rem;
+}
+
+@media (max-width: 991px) {
+    .archive-showcase-container {
+        padding: 4rem 5% 6rem 5%;
+    }
+    
+    .catalog-split-header {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .archive-showcase-container {
+        padding: 3rem 4% 4rem 4%;
+    }
+}
+
+@media (max-width: 480px) {
+    .archive-showcase-container {
+        padding: 2rem 4% 3rem 4%;
+    }
 }
 
 @media (max-width: 768px) {
@@ -539,11 +562,11 @@ body {
 
 @media (max-width: 768px) {
     .about-card-section {
-        padding: 4rem 5%;
+        padding: 2rem 5%;
     }
     
     .about-card {
-        padding: 3rem 2rem;
+        padding: 0;
     }
     
     .about-title-teal {
@@ -552,6 +575,31 @@ body {
     
     .about-image-overlay {
         height: 400px;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-card-section {
+        padding: 1.5rem 4%;
+    }
+    
+    .about-micro-label {
+        font-size: 0.7rem;
+    }
+    
+    .about-title-teal {
+        font-size: 1.4rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .about-content-text p {
+        font-size: 1rem;
+    }
+    
+    .about-image-overlay {
+        height: 350px;
+        margin-top: 0;
+        margin-bottom: 0;
     }
 }
 
