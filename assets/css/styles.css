@@ -217,6 +217,52 @@ body {
     }
 }
 
+@media (max-width: 768px) {
+    .boutique-hero-section {
+        padding: 1.5rem 5% 4rem 5%;
+    }
+    .hero-top-title {
+        font-size: 2rem;
+        letter-spacing: 0.1rem;
+        margin-bottom: 1.5rem;
+    }
+    .hero-three-column-grid {
+        gap: 2rem;
+    }
+    .featured-cover-link {
+        max-width: 250px;
+    }
+    .author-badge-text {
+        font-size: 0.85rem;
+    }
+    .featured-snippet-text {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .boutique-hero-section {
+        padding: 1rem 4% 3rem 4%;
+    }
+    .hero-top-title {
+        font-size: 1.5rem;
+        letter-spacing: 0.05rem;
+        margin-bottom: 1rem;
+    }
+    .hero-three-column-grid {
+        gap: 1.5rem;
+    }
+    .featured-cover-link {
+        max-width: 200px;
+    }
+    .author-badge-text {
+        font-size: 0.75rem;
+    }
+    .featured-snippet-text {
+        font-size: 0.75rem;
+    }
+}
+
 /* ==========================================================================
    4. SHOWCASE ARCHIVE CATALOG INDEX
    ========================================================================== */
@@ -284,6 +330,30 @@ body {
     .horizontal-showcase-row {
         grid-template-columns: 1fr;
         gap: 4rem;
+    }
+    .issue-tag {
+        font-size: 0.85rem;
+    }
+    .editorial-read-btn {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .issue-tag {
+        font-size: 0.9rem;
+    }
+    .editorial-read-btn {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .issue-tag {
+        font-size: 0.95rem;
+    }
+    .editorial-read-btn {
+        font-size: 0.9rem;
     }
 }
 
