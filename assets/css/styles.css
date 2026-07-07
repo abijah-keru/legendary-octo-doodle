@@ -158,9 +158,12 @@ body {
 
 .featured-cover-shadow-box {
     width: 100%;
+    max-width: 100%;
     aspect-ratio: 2 / 3;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15); 
     transition: transform 0.3s ease;
+    display: block;
+    margin: 0 auto;
 }
 
 .featured-cover-shadow-box:hover {
@@ -740,4 +743,40 @@ body {
 .page-container canvas {
     background-color: #ffffff;
     transition: opacity 0.2s ease;
+}
+
+/* ==========================================================================
+   MOBILE OPTIMIZATION - Prevents Overflow & Ensures Responsive Behavior
+   ========================================================================== */
+@media (max-width: 768px) {
+    /* 1. Shrink the featured magazine cover */
+    .featured-cover-shadow-box {
+        width: 85% !important;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    /* 2. Ensure all cover images stay contained */
+    .featured-hero-img,
+    .showcase-img {
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+    }
+
+    /* 3. Prevent layout overflow on mag cards */
+    .premium-editorial-card {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    /* 4. Ensure about section images don't overflow */
+    .about-image-overlay img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    body {
+        overflow-x: hidden;
+    }
 }
