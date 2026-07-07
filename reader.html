@@ -3,38 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chronicle | Reading Room</title>
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <title>stuff | Reading Room</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf_viewer.min.css">
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
     
+    <link rel="stylesheet" href="assets/css/styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
-    <!-- PWA Installation Controls -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#fbfbfb">
 </head>
 <body class="reader-body">
 
     <nav class="reader-nav">
-        <a href="index.html" class="back-button">&larr; Return to Library</a>
-        <div class="reader-controls">
-            <span id="issue-title" class="reader-issue-title">Loading Profile...</span>
+        <a href="index.html" class="return-library-link" style="text-decoration: none; color: #111111; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.1rem; text-transform: uppercase;">
+            &larr; RETURN TO LIBRARY
+        </a>
+        
+        <div class="reader-meta-center">
+            <span id="issue-title" style="font-family: var(--font-serif); font-size: 1.1rem; font-style: italic;">Loading Issue...</span>
         </div>
-        <div class="page-indicator">Page <span id="current-page">1</span> of <span id="total-pages">-</span></div>
+        
+        <div class="reader-meta-right" style="font-family: var(--font-sans); font-size: 0.8rem; color: #666666;">
+            Page <span id="current-page">-</span> of <span id="total-pages">-</span>
+        </div>
     </nav>
 
-<main class="reader-viewport">
-        <!-- Modern, elegant loading screen -->
+    <main class="reader-viewport">
         <div id="reader-loading-screen" class="reader-placeholder">
             <img id="instant-cover-backdrop" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Loading Cover..." class="loading-cover-blur">
             <div class="spinner-editorial"></div>
             <p class="loading-text">Preparing Editorial Layout...</p>
         </div>
 
-        <!-- The native scroll track sits directly here -->
         <div id="scroll-view" class="container-scroll"></div>
     </main>
 

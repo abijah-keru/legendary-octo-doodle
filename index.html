@@ -7,27 +7,104 @@
     <link rel="stylesheet" href="assets/css/styles.css"> 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600&family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
-    <!-- PWA Installation Controls -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#fbfbfb">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="kindle-home">
+<body class="author-boutique-body">
 
-    <header class="site-header">
-        <h1 class="site-title">stuff</h1>
-        <p class="site-subtitle">A Curated Archive of Personal Print Editorials</p>
-    </header>
+<!-- HEADER NAVIGATION -->
+<header class="boutique-site-header">
+    <div class="header-left">
+        <button class="hamburger-menu-btn" aria-label="Menu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+        
+        <a href="index.html" class="whimsy-logo-container">
+            <span class="whimsy-sparkle">✧</span>
+            <h1 class="site-logo-text">stuff</h1>
+        </a>
+    </div>
 
-    <main class="archive-showcase-container">
-        <div id="bookshelf"></div>
-    </main>
+    <div class="header-right">
+        <nav class="desktop-nav-links">
+            <a href="#bookshelf-section">Editorials</a>
+        </nav>
+        <svg class="search-icon" viewBox="0 0 24 24" width="20" height="20"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="#000"/></svg>
+    </div>
+</header>
 
-    <footer class="site-footer">
-        <p>&copy; 2026 Chronicle. Built with calm intent.</p>
-    </footer>
+<main class="main-editorial-layout">
+    
+    <!-- LITERARY BOUTIQUE HERO SECTION -->
+    <section class="boutique-hero-section">
+        <h2 class="hero-top-title">Latest Mag</h2>
+        
+        <div class="hero-three-column-grid">
+            <!-- LEFT COLUMN: ARCHIVE METADATA -->
+            <div class="hero-col-left">
+                <p class="author-badge-text">June 2026 Issues</p>
+            </div>
 
-    <script src="assets/js/app.js"></script>
+            <!-- CENTER COLUMN: FEATURED ISSUE 03 COVER -->
+            <div class="hero-col-center">
+                <a href="reader.html?id=issue-03" class="featured-cover-link">
+                    <div class="featured-cover-shadow-box">
+                        <img src="assets/covers/issue-03.png" alt="Latest Issue 03 Cover" class="featured-hero-img">
+                    </div>
+                </a>
+            </div>
+
+            <!-- RIGHT COLUMN: ARTICLE SNIPPET & BALANCED CTA -->
+            <div class="hero-col-right">
+                <p class="featured-snippet-text">
+                "<em>So much of life is spent in ordinary time. There's no grand struggle, no sacraments, no epiphanies. Just simple domesticity captured here and there."</em>
+                </p>
+                <a href="reader.html?id=issue-03" class="boutique-gold-btn">Open Issue</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- LOWER AREA CATALOG INDEX -->
+    <section id="bookshelf-section" class="archive-showcase-container">
+        <div class="catalog-split-header">
+            <div class="catalog-header-left">
+                <h3 class="catalog-main-heading">Magz</h3>
+            </div>
+            <div class="catalog-header-right">
+                <p class="catalog-side-note">Compendium of random thoughts and musings.</p>
+                <a href="#bookshelf-section" class="catalog-view-all-btn">View All</a>
+            </div>
+        </div>
+
+        <div id="bookshelf" class="horizontal-showcase-row">
+            <!-- Magazines append dynamically here via app.js -->
+        </div>
+    </section>
+</main>
+<!-- ABOUT THE ARCHIVE SECTION (Card with Overlay Image) -->
+    <section class="about-card-section" id="about-section">
+        <div class="about-card">
+            <span class="about-micro-label">About</span>
+            
+            <div class="about-content-text">
+                <p>"In a couple hundred years, this world will turn over to a completely different cast of characters. They won't look back and wonder who won the battles or when.</p>
+                
+                <p>Instead, they'll try to imagine how we lived day to day, gathering precious artifacts of the world as it once was, in all its heartbreaking little details. They'll wonder about superstitions, the weird little memes and phrases, and jokes we liked to tell, the pop songs we hummed mindlessly to ourselves.</p>
+                
+                <p>We rarely think to hold on to that part of life. We don't build statues of ordinary people. We don't leave behind little plaques to commemorate the milestones of ordinary time. But it all still happened. All those cheap and disposable experiences are no less real than anything in our history books, no less sacred than anything in our hymnals."</p>
+            </div>
+        </div>
+        
+        <div class="about-image-overlay">
+            <img src="assets/covers/about.png" alt="About the Archive">
+        </div>
+    </section>
+
+<footer class="site-footer">
+    <p>&copy; 2026 STUFF ARCHIVE</p>
+</footer>
+
+<script src="assets/js/app.js"></script>
 </body>
 </html>

@@ -5,7 +5,8 @@ let pdfDoc = null,
     currentPageNum = 1,
     totalPageCount = 0;
 
-const scrollContainer = document.getElementById('scroll-view');
+// Target the window/body for desktop scrolling
+const scrollContainer = window; 
 const pageIndicatorNum = document.getElementById('current-page');
 const totalPageSpan = document.getElementById('total-pages');
 const issueTitleHeader = document.getElementById('issue-title');
@@ -22,8 +23,7 @@ fetch('assets/data/magazines.json')
         currentId = activeMag.id;
         issueTitleHeader.textContent = activeMag.title;
         
-        const instantCover = document.getElementById('instant-cover-backdrop');
-        if (instantCover) instantCover.src = activeMag.coverImage;
+        // The image-loading lines that caused the flash have been completely removed from here!
         
         const savedPage = localStorage.getItem(`read_progress_${currentId}`);
         if (savedPage) currentPageNum = parseInt(savedPage, 10);
@@ -41,10 +41,13 @@ function loadPDFDocument(url) {
 }
 
 function renderHighResReadingView() {
-    scrollContainer.innerHTML = '';
+    const scrollViewDiv = document.getElementById('scroll-view');
+    if (!scrollViewDiv) return;
+    
+    scrollViewDiv.innerHTML = '';
     const isMobile = window.innerWidth < 768;
     
-    // 1. Build structural tracking containers
+    // 1. Build structural canvas frame layout blocks
     for (let pageNum = 1; pageNum <= totalPageCount; pageNum++) {
         const pageContainer = document.createElement('div');
         pageContainer.id = `scroll-page-wrapper-${pageNum}`;
@@ -53,33 +56,34 @@ function renderHighResReadingView() {
         const canvas = document.createElement('canvas');
         pageContainer.appendChild(canvas);
         
-        if (pageNum > 1) {
-            const textLayerDiv = document.createElement('div');
-            textLayerDiv.className = 'textLayer';
-            pageContainer.appendChild(textLayerDiv);
-        }
-        scrollContainer.appendChild(pageContainer);
+        scrollViewDiv.appendChild(pageContainer);
     }
 
-    // 2. Load Page 1 instantly
+    // 2. Load Page 1 cleanly without structural layout popping
     renderSinglePage(1).then(() => {
+        // Remove loading overlay safely now that layout sizing is real
         const loadingScreen = document.getElementById('reader-loading-screen');
         if (loadingScreen) {
             loadingScreen.style.opacity = '0';
             setTimeout(() => loadingScreen.remove(), 400);
         }
         
-        setTimeout(() => {
+        // Handle scroll position restoration smoothly
+        if (currentPageNum > 1) {
             const savedEl = document.getElementById(`scroll-page-wrapper-${currentPageNum}`);
             if (savedEl) {
-                if (isMobile) {
-                    scrollContainer.scrollLeft = savedEl.offsetLeft;
-                } else {
-                    savedEl.scrollIntoView({ block: 'start' });
-                }
+                // Request animation frame gives the browser a breathing microsecond to map canvas bounds
+                requestAnimationFrame(() => {
+                    setTimeout(() => {
+                        savedEl.scrollIntoView({ block: 'start', behavior: 'auto' });
+                    }, 50);
+                });
             }
-        }, 150);
+        } else {
+            if (pageIndicatorNum) pageIndicatorNum.textContent = "1";
+        }
 
+        // Render remaining canvas rows incrementally down the background track
         renderRemainingPagesSequentially(2);
     });
 
@@ -88,7 +92,6 @@ function renderHighResReadingView() {
         if (!wrapper) return Promise.resolve();
         
         const canvas = wrapper.querySelector('canvas');
-        const textLayerDiv = wrapper.querySelector('.textLayer');
 
         return pdfDoc.getPage(pageNum).then(page => {
             const viewport = page.getViewport({ scale: 2.0 });
@@ -97,21 +100,7 @@ function renderHighResReadingView() {
             canvas.height = viewport.height;
             canvas.width = viewport.width;
 
-            return page.render({ canvasContext: context, viewport: viewport }).promise.then(() => {
-                if (pageNum > 1 && textLayerDiv) {
-                    textLayerDiv.style.width = `${viewport.width}px`;
-                    textLayerDiv.style.height = `${viewport.height}px`;
-                    
-                    return page.getTextContent().then(textContent => {
-                        return pdfjsLib.renderTextLayer({
-                            textContent: textContent,
-                            container: textLayerDiv,
-                            viewport: viewport,
-                            textDivs: []
-                        }).promise;
-                    });
-                }
-            });
+            return page.render({ canvasContext: context, viewport: viewport }).promise;
         }).catch(err => console.error(err));
     }
 
@@ -122,8 +111,10 @@ function renderHighResReadingView() {
         });
     }
 
-    // Monitor position tracking metrics on scroll
+    // Monitor position tracking matrices on view track transition updates
     scrollContainer.addEventListener('scroll', () => {
+        const navHeight = 55; // Offset logic matches global header navigation bounds
+        
         for (let pageNum = 1; pageNum <= totalPageCount; pageNum++) {
             const pageEl = document.getElementById(`scroll-page-wrapper-${pageNum}`);
             if (pageEl) {
@@ -134,8 +125,8 @@ function renderHighResReadingView() {
                     const midPoint = window.innerWidth / 2;
                     isCurrent = (rect.left <= midPoint && rect.right >= midPoint);
                 } else {
-                    const containerTop = scrollContainer.getBoundingClientRect().top;
-                    isCurrent = (rect.top <= containerTop + 200 && rect.bottom >= containerTop + 200);
+                    // Optimized positioning metrics utilizing top nav offset calculations
+                    isCurrent = (rect.top <= navHeight + 150 && rect.bottom >= navHeight + 150);
                 }
 
                 if (isCurrent) {

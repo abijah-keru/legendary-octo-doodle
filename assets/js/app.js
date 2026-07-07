@@ -1,11 +1,3 @@
-
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-            .then(reg => console.log('Stuff PWA Service Worker active.'))
-            .catch(err => console.error('PWA initialization halted:', err));
-    });
-}
 document.addEventListener('DOMContentLoaded', () => {
     const bookshelf = document.getElementById('bookshelf');
 
@@ -19,30 +11,43 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(err => {
             console.error(err);
-            bookshelf.innerHTML = `<p style="text-align: center; font-family: var(--font-serif); margin-top: 3rem;">Unable to load your collection.</p>`;
+            if (bookshelf) {
+                bookshelf.innerHTML = `<p style="text-align: center; font-family: var(--font-serif); margin-top: 3rem;">Unable to load your collection.</p>`;
+            }
         });
-
-    function renderEditorialShowcase(magazines) {
-        bookshelf.innerHTML = ''; 
-
-        const showcaseGrid = document.createElement('div');
-        showcaseGrid.className = 'horizontal-showcase-row';
-
-        magazines.forEach(mag => {
-            showcaseGrid.innerHTML += `
-                <a href="reader.html?id=${mag.id}" class="premium-editorial-card">
-                    <div class="showcase-cover-frame">
-                        <img src="${mag.coverImage}" alt="${mag.title} Cover" class="showcase-img" loading="lazy">
-                    </div>
-                    <div class="showcase-meta-block">
-                        <span class="issue-tag">Issue No. ${mag.number}</span>
-                        <h2 class="issue-title">${mag.title}</h2>
-                        <p class="issue-date">${mag.date}</p>
-                    </div>
-                </a>
-            `;
-        });
-
-        bookshelf.appendChild(showcaseGrid);
-    }
 });
+
+function renderEditorialShowcase(magazines) {
+    const bookshelf = document.getElementById('bookshelf');
+    if (!bookshelf) return;
+    
+    bookshelf.innerHTML = ''; 
+
+    magazines.forEach(mag => {
+        bookshelf.innerHTML += `
+            <a href="reader.html?id=${mag.id}" class="premium-editorial-card">
+                <div class="showcase-cover-frame">
+                    <img src="${mag.coverImage}" alt="Issue ${mag.number} Cover" class="showcase-img" loading="lazy">
+                </div>
+                
+                <!-- FORCED VERTICAL STACK (Bypasses Browser Cache) -->
+                <div style="margin-top: 1.25rem; display: block; width: 100%; text-align: left;">
+                    
+                    <div class="issue-tag" style="display: block; margin-bottom: 0.8rem;">
+                        ISSUE NO. ${mag.number}
+                    </div>
+                    
+                    <div class="editorial-read-btn">
+                        <span class="btn-menu-lines">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                        READ
+                    </div>
+                    
+                </div>
+            </a>
+        `;
+    });
+}
