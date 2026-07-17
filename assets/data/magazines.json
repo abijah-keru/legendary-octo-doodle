@@ -1,4 +1,12 @@
 [
+   {
+    "id": "issue-04",
+    "title": "The Latest Concept",
+    "number": "04",
+    "date": "July 2026",
+    "coverImage": "assets/covers/issue-04.png",
+    "pdfUrl": "assets/pdfs/issue-04.pdf"
+  },
   {
     "id": "issue-03",
     "title": "The Latest Concept",
